@@ -7,6 +7,18 @@
       "type": "npm",
       "script": "watch-debug",
       "isBackground": true
+    },
+    {
+      "type": "npm",
+      "script": "watch-test",
+      "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "build-ts",
+      "problemMatcher": [
+        "$tsc"
+      ]
     }
   ]
 }

@@ -1,31 +1,29 @@
-import { authors, books, IAuthor, IBook } from "./data";
+import { database, DataBase, IRecipe, IUser } from "./data";
 import { typedArgs } from "./utils/utils";
 
 interface IContext {
-  authors: IAuthor[];
-  books: IBook[];
+  database: DataBase;
 }
 
 // create the context to be used for graphql queries
 const context: IContext = {
-  authors,
-  books,
+  database,
 };
 
 // A map of functions which return data for the schema.
 const resolvers = {
-  Book: {
-    author: (book: IBook, args: any, ctx: IContext) =>
-      ctx.authors.find(author => author.name === book.authorName),
-  },
   Query: {
-    author: typedArgs((root, args: { authorName: string }, ctx: IContext) => {
-      return ctx.authors.filter(author => author.name === args.authorName);
+    recipe: typedArgs((root, args: { title: string }, ctx: IContext) => {
+      return ctx.database.recipeByTitle(args.title);
     }),
-    book: typedArgs((root, args: { title: string }, ctx: IContext) => {
-      return ctx.books.find(book => book.title === args.title);
-    }),
-    books: (root: any, args: any, ctx: IContext) => ctx.books,
+    recipes: (root: any, args: any, ctx: IContext) => ctx.database.recipes(),
+    user: typedArgs((root, args: { authorName: string }, ctx: IContext) =>
+      ctx.database.userByName(args.authorName),
+    ),
+  },
+  Recipe: {
+    author: (recipe: IRecipe, args: any, ctx: IContext) =>
+      ctx.database.userByName(recipe.authorName),
   },
 };
 

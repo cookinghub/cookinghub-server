@@ -1,20 +1,24 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
-  type Book {
-    title: String
-    author: Author
+  type Recipe {
+    id: ID!
+    title: String!
+    author: User!
+    content: String
   }
 
-  type Author {
-    name: String
-    books: [Book]
+  type User {
+    id: ID!
+    name: String!
+    recpies: [Recipe]!
   }
 
   type Query {
-    book(title: String): Book
-    books: [Book]
-    author(name: String): Author
+    recipe(title: String, id: String): Recipe
+    recipes: [Recipe]!
+    user(id: ID): User
+    users: [User]
   }
 
   schema {
